@@ -1,6 +1,6 @@
 
 import { useCallback } from 'react';
-import type { MortgageInputs, CalculationResults, ScenarioResult } from '../types';
+import type { MortgageInputs, CalculationResults, ScenarioResult, TimeSeriesPoint } from '../types';
 
 export const useMortgageCalculator = () => {
 
@@ -62,9 +62,34 @@ export const useMortgageCalculator = () => {
       monthlyPayment: newMonthlyPayment
     };
 
+    // Generate time series data for growth over time
+    const timeSeriesData: TimeSeriesPoint[] = [];
+    for (let month = 1; month <= n_months; month++) {
+      // Lump sum growth over time (compound growth)
+      const lumpSumValue = lumpSum * Math.pow(1 + r_market_monthly, month);
+      
+      // Monthly savings growth over time (future value of annuity up to this point)
+      let monthlySavingsValue = 0;
+      if (monthlyInvestment > 0) {
+        if (r_market_monthly === 0) {
+          monthlySavingsValue = monthlyInvestment * month;
+        } else {
+          monthlySavingsValue = monthlyInvestment * ((Math.pow(1 + r_market_monthly, month) - 1) / r_market_monthly);
+        }
+      }
+      
+      timeSeriesData.push({
+        month,
+        year: month / 12, // Exact year as decimal for internal calculations
+        lumpSumValue,
+        monthlySavingsValue
+      });
+    }
+
     return {
       investLumpSum: investLumpSumResult,
       payDownMortgage: payDownMortgageResult,
+      timeSeriesData,
       inputs
     };
   }, []);

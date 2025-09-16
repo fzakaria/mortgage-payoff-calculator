@@ -7,6 +7,13 @@ export interface MortgageInputs {
   lumpSum: number;
 }
 
+export interface TimeSeriesPoint {
+  month: number;
+  year: number;
+  lumpSumValue: number;
+  monthlySavingsValue: number;
+}
+
 export interface ScenarioResult {
   finalPortfolioValue: number;
   totalInterestPaid: number;
@@ -16,5 +23,6 @@ export interface ScenarioResult {
 export interface CalculationResults {
   investLumpSum: ScenarioResult;
   payDownMortgage: ScenarioResult;
+  timeSeriesData: TimeSeriesPoint[];
   inputs: MortgageInputs;
 }
