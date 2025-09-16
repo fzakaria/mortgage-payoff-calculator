@@ -1,0 +1,5 @@
+{
+  "name": "Mortgage Lump Sum vs. Investment Calculator",
+  "description": "A calculator to compare the financial outcome of using a lump sum to pay down a mortgage versus investing it in the market. It uniquely models investing the saved monthly mortgage payments.",
+  "requestFramePermissions": []
+}
